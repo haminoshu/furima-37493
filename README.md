@@ -28,7 +28,7 @@
 | category_id            | integer    | null: false                    |
 | status_id              | integer    | null: false                    |
 | shipping_fee_burden_id | integer    | null: false                    |
-| shipping_area_id       | integer    | null: false                    |
+| prefecture_id          | integer    | null: false                    |
 | delivery_day_id        | integer    | null: false                    |
 | user                   | references | null: false, foreign_key: true |
 
@@ -48,9 +48,9 @@
 - belongs_to :user
 - belongs_to :item
 - has_many :comments
-- has_one :send
+- has_one :delivery
 
-## sends テーブル
+## deliverys テーブル
 
 | Column            | Type       | Options                        |
 | ----------------- | ---------- | ------------------------------ |
