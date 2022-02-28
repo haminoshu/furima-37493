@@ -5,7 +5,7 @@
 | Column                | Type    | Options                   |
 | --------------------- | ------- | ------------------------- |
 | nickname              | string  | null: false               |
-| mail                  | string  | null: false, unique: true |
+| mail                  | email   | null: false, unique: true |
 | encrypted_password    | string  | null: false               |
 | last_name             | string  | null: false               |
 | first_name            | string  | null: false               |
@@ -22,11 +22,9 @@
 
 | Column                 | Type       | Options                        |
 | ---------------------- | ---------- | ------------------------------ |
-| image                  | string     | null: false                    |
 | items_name             | string     | null: false                    |
 | items_price            | integer    | null: false                    |
 | explain                | text       | null: false                    |
-| show                   | text       | null: false                    |
 | category_id            | integer    | null: false                    |
 | status_id              | integer    | null: false                    |
 | shipping_fee_burden_id | integer    | null: false                    |
@@ -35,8 +33,8 @@
 | user                   | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :users
-- has_one :buys
+- belongs_to :user
+- has_one :buy
 - has_many :comments
 
 ## buys テーブル
@@ -47,8 +45,8 @@
 | item        | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :users
-- has_one :items
+- belongs_to :user
+- has_one :item
 - has_many :comments
 - has_many :sends
 
@@ -62,10 +60,10 @@
 | address           | string     | null: false                    |
 | building          | string     |                                |
 | phone_number      | string     | null: false                    |
-| user              | references | null: false, foreign_key: true |
+| buy               | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :buys
+- belongs_to :buy
 
 ## comments テーブル
 
@@ -76,6 +74,6 @@
 | buy         | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :users
-- belongs_to :items
-- belongs_to :buys
+- belongs_to :user
+- belongs_to :item
+- belongs_to :buy
