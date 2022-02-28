@@ -12,7 +12,11 @@
 | last_name_ruby        | string  | null: false               |
 | first_name_ruby       | string  | null: false               |
 | birthday              | date    | null: false               |
- 
+
+### Association
+- has_many :items
+- has_many :buys
+- has_many :comments
 
 ## items テーブル
 
@@ -20,7 +24,7 @@
 | ---------------------- | ---------- | ------------------------------ |
 | image                  | string     | null: false                    |
 | items_name             | string     | null: false                    |
-| items_price            | string     | null: false                    |
+| items_price            | integer    | null: false                    |
 | explain                | text       | null: false                    |
 | show                   | text       | null: false                    |
 | category_id            | integer    | null: false                    |
@@ -28,16 +32,25 @@
 | shipping_fee_burden_id | integer    | null: false                    |
 | shipping_area_id       | integer    | null: false                    |
 | delivery_day_id        | integer    | null: false                    |
-| sales_commission       | integer    | null: false                    |
-| sales_profit           | integer    | null: false                    |
-| user_id                | references | null: false, foreign_key: true |
+| user                   | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to :users
+- has_one :buys
+- has_many :comments
 
 ## buys テーブル
 
 | Column      | Type       | Options                        |
 | ----------- | ---------- | ------------------------------ |
-| buyer       | string     | null:false                     |
-| items_id    | references | null: false, foreign_key: true |
+| user        | references | null: false, foreign_key: true |
+| item        | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to :users
+- has_one :items
+- has_many :comments
+- has_many :sends
 
 ## sends テーブル
 
@@ -45,16 +58,24 @@
 | ----------------- | ---------- | ------------------------------ |
 | post_cord         | string     | null: false                    |
 | prefecture_id     | integer    | null: false                    |
-| municipality_id   | integer    | null: false                    |
+| municipality      | string     | null: false                    |
 | address           | string     | null: false                    |
 | building          | string     |                                |
 | phone_number      | string     | null: false                    |
-| buyer_id          | references | null: false, foreign_key: true |
+| user              | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to :buys
 
 ## comments テーブル
 
 | Column      | Type       | Options                        |
 | ----------- | ---------- | ------------------------------ |
 | comment     | text       | null: false,                   |
-| user_id     | references | null: false, foreign_key: true |
-| buy_id      | references | null: false, foreign_key: true |
+| user        | references | null: false, foreign_key: true |
+| buy         | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to :users
+- belongs_to :items
+- belongs_to :buys
