@@ -5,7 +5,7 @@
 | Column                | Type    | Options                   |
 | --------------------- | ------- | ------------------------- |
 | nickname              | string  | null: false               |
-| mail                  | email   | null: false, unique: true |
+| email                 | string  | null: false, unique: true |
 | encrypted_password    | string  | null: false               |
 | last_name             | string  | null: false               |
 | first_name            | string  | null: false               |
@@ -46,9 +46,9 @@
 
 ### Association
 - belongs_to :user
-- has_one :item
+- belongs_to :item
 - has_many :comments
-- has_many :sends
+- has_one :send
 
 ## sends テーブル
 
