@@ -28,6 +28,16 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include("Password can't be blank")
     end
+    it 'passwordが数字のみでは登録できない' do
+      @user.password = '123456'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password には半角英字と半角数字の両方を含めて設定してください")
+    end
+    it 'passwordは全角では登録できない' do
+      @user.password = 'ｐａｓｓｗｏｒｄ'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password には半角英字と半角数字の両方を含めて設定してください")
+    end
     it 'passwordとpassword_confirmationが不一致では登録できない' do
       @user.password_confirmation = ''
       @user.valid?
@@ -82,26 +92,30 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include('Password is too long (maximum is 128 characters)')
     end
-    it 'passwordが英字と数字の両方を含めていない場合は登録できない' do
+    it 'passwordが半角英字と半角数字の両方を含めていない場合は登録できない' do
       @user.password = 'password'
       @user.valid?
-      expect(@user.errors.full_messages).to include('Password には英字と数字の両方を含めて設定してください')
+      expect(@user.errors.full_messages).to include('Password には半角英字と半角数字の両方を含めて設定してください')
     end
     it 'last_nameが全角でないと登録できない' do
-      @user.last_name = '山田'
-      expect(@user).to be_valid
+      @user.last_name = 'yamada'
+      @user.valid?
+      expect(@user.errors.full_messages).to include('Last name 全角文字を使用してください')
     end
     it 'first_nameが全角でないと登録できない' do
-      @user.first_name = '花子'
-      expect(@user).to be_valid
+      @user.first_name = 'hanako'
+      @user.valid?
+      expect(@user.errors.full_messages).to include('First name 全角文字を使用してください')
     end
     it 'last_name_rubyが全角カナでないと登録できない' do
-      @user.last_name_ruby = 'ヤマダ'
-      expect(@user).to be_valid
+      @user.last_name_ruby = 'yamada'
+      @user.valid?
+      expect(@user.errors.full_messages).to include('Last name ruby 全角カナを使用してください')
     end
     it 'first_name_rubyが全角カナでないと登録できない' do
-      @user.first_name_ruby = 'ハナコ'
-      expect(@user).to be_valid
+      @user.first_name_ruby = 'hanako'
+      @user.valid?
+      expect(@user.errors.full_messages).to include('First name ruby 全角カナを使用してください')
     end
   end
 end
