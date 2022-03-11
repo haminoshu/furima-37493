@@ -5,17 +5,11 @@ class BuysController < ApplicationController
   def index
     @buy_delivery = BuyDelivery.new
 
-    if @item.buy.present?
-      redirect_to root_path
-    end
+    redirect_to root_path if @item.buy.present?
 
-    if current_user == @item.user
-      redirect_to root_path
-    end
+    redirect_to root_path if current_user == @item.user
 
-    unless user_signed_in?
-      redirect_to root_path
-    end
+    redirect_to root_path unless user_signed_in?
   end
 
   def new
@@ -23,18 +17,16 @@ class BuysController < ApplicationController
 
   def create
     @buy_delivery = BuyDelivery.new(delivery_params)
-    
+
     if @buy_delivery.valid?
       pay_item
       @buy_delivery.save
-      return redirect_to root_path
+      redirect_to root_path
     else
       render :index
     end
   end
 
-
-  
   private
 
   def set_item
@@ -42,17 +34,17 @@ class BuysController < ApplicationController
   end
 
   def delivery_params
-    params.require(:buy_delivery).permit(:post_code, :prefecture_id, :municipality, :address, :building, :phone_number).merge(token: params[:token], user_id: current_user.id, item_id: params[:item_id] )
+    params.require(:buy_delivery).permit(:post_code, :prefecture_id, :municipality, :address, :building, :phone_number).merge(
+      token: params[:token], user_id: current_user.id, item_id: params[:item_id]
+    )
   end
 
-
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp.api_key = ENV['PAYJP_SECRET_KEY']
     Payjp::Charge.create(
       amount: @item[:items_price],
       card: delivery_params[:token],
       currency: 'jpy'
     )
   end
-
 end
