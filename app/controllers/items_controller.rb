@@ -25,6 +25,10 @@ class ItemsController < ApplicationController
 
   def edit
     
+    if @item.buy.present?
+      render :index
+    end
+
     unless current_user == @item.user
       redirect_to action: :index
     end
