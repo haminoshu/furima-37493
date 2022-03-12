@@ -62,17 +62,23 @@ RSpec.describe BuyDelivery, type: :model do
         expect(@buy_delivery.errors.full_messages).to include("Phone number can't be blank")
       end
 
-      it '電話番号は10桁以上かつ11桁以下の半角数字でなければ登録できない' do
-        @buy_delivery.phone_number = 1
+      it '電話番号は10桁以上でなければ登録できない' do
+        @buy_delivery.phone_number = 123456789
         @buy_delivery.valid?
         expect(@buy_delivery.errors.full_messages).to include('Phone number is not a number.Phone number must be greater than or equal to 10, or must be less than or equal to 11')
       end
 
-      # it '電話番号は半角数字でなければ登録できない' do
-      #   @buy_delivery.phone_number = 'abc'
-      #   @buy_delivery.valid?
-      #   expect(@buy_delivery.errors.full_messages).to include('Phone number is not a number.')
-      # end
+      it '電話番号は11桁以下でなければ登録できない' do
+        @buy_delivery.phone_number = 123456789123
+        @buy_delivery.valid?
+        expect(@buy_delivery.errors.full_messages).to include('Phone number is not a number.Phone number must be greater than or equal to 10, or must be less than or equal to 11')
+      end
+
+      it '電話番号は半角数字でなければ登録できない' do
+        @buy_delivery.phone_number = 'abc'
+        @buy_delivery.valid?
+        expect(@buy_delivery.errors.full_messages).to include('Phone number is not a number.Phone number must be greater than or equal to 10, or must be less than or equal to 11')
+      end
 
       it 'userが紐付いていない場合は登録できない' do
         @buy_delivery.user_id = ''
