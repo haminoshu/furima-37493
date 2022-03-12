@@ -24,14 +24,12 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    
-    unless current_user == @item.user
-      redirect_to action: :index
-    end
+    render :index if @item.buy.present?
+
+    redirect_to action: :index unless current_user == @item.user
   end
 
   def update
-
     if @item.update(item_params)
       redirect_to item_path
     else
@@ -45,7 +43,6 @@ class ItemsController < ApplicationController
     redirect_to root_path
   end
 
-
   private
 
   def item_params
@@ -56,5 +53,4 @@ class ItemsController < ApplicationController
   def set_item
     @item = Item.find(params[:id])
   end
-
 end
