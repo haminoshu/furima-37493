@@ -1,5 +1,5 @@
 class BuysController < ApplicationController
-  before_action :authenticate_user!, except: :index
+  before_action :authenticate_user!, only: [:index, :new, :create]
   before_action :set_item, only: [:index, :create]
 
   def index
@@ -8,8 +8,6 @@ class BuysController < ApplicationController
     redirect_to root_path if @item.buy.present?
 
     redirect_to root_path if current_user == @item.user
-
-    redirect_to  new_user_session_path unless user_signed_in?
 
   end
 
